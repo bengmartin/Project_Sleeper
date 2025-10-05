@@ -20,15 +20,21 @@ public class PlayerInteract : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit, interactRange, interactableMask))
             {
-                Debug.Log("Interacted with: " + hit.collider.name);
+                IInteractable interactable = hit.collider.GetComponent<IInteractable>();
+                if (interactable != null)
+                {
+                    interactable.Interact();  // Call the interaction method
+                    Debug.Log("Interacted with: " + hit.collider.name);
+                }
             }
             else
             {
                 Debug.Log("Nothing to interact with.");
             }
         }
-    }
 
+        CheckForInteractable();
+    }
 
     void CheckForInteractable()
     {
@@ -51,7 +57,6 @@ public class PlayerInteract : MonoBehaviour
             }
         }
 
-        // If we get here, player isn't looking at any interactable
         if (currentInteractable != null)
         {
             currentInteractable.OnLoseFocus();
